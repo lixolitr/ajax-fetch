@@ -1,0 +1,20 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const app = express();
+
+app.use(bodyParser.json());
+app.use(express.static(path.resolve(__dirname,'./')));
+
+app.post('/login', (req, res) => {
+    const fs = require('fs');
+
+    fs.appendFile('./logins.txt', JSON.stringify(req.body) + '\n', function(err){
+        if (err){
+            res.status(500).send('Server error');
+            return console.log(err);
+        }
+        console.log('Data saved: ' + JSON.stringify(req.body));
+        res.send('Data saved');  
+    })
+}); 
